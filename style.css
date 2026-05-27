@@ -136,6 +136,7 @@ body {
 .nav-footer {
     border-top: 1px solid var(--panel-border);
     padding-top: 20px;
+    margin-bottom: 95px;
 }
 
 .theme-status {
