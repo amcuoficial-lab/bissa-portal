@@ -1,5 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------------
+    // GITHUB DATABASE SYNC SYSTEM
+    // -------------------------------------------------------------
+    async function loadDatabase() {
+        try {
+            const res = await fetch('/api/db');
+            if (res.ok) {
+                const data = await res.json();
+                if (data.releases) releases = data.releases;
+                if (data.shopProducts) shopProducts = data.shopProducts;
+                if (data.submittedDemos) submittedDemos = data.submittedDemos;
+                
+                // Re-render
+                renderReleases();
+                renderShopProducts();
+                updateInboxUI();
+                renderAdminReleasesList();
+                renderAdminProductsList();
+                updateBinds();
+            }
+        } catch (err) {
+            console.error('Failed to load database, using fallback local defaults:', err);
+        }
+    }
+
+    async function saveDatabase() {
+        try {
+            await fetch('/api/db', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ releases, shopProducts, submittedDemos })
+            });
+        } catch (err) {
+            console.error('Failed to save database to GitHub:', err);
+        }
+    }
+
+    async function uploadAudioFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = async () => {
+                const base64 = reader.result.split(',')[1];
+                try {
+                    const res = await fetch('/api/db', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'upload_file',
+                            fileName: file.name,
+                            fileContentBase64: base64
+                        })
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        resolve(data.url);
+                    } else {
+                        reject(new Error('GitHub file upload failed'));
+                    }
+                } catch (err) {
+                    reject(err);
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // -------------------------------------------------------------
     // DYNAMIC DATA ARRAYS (Releases & Shop Items)
     // -------------------------------------------------------------
     let releases = [
@@ -205,8 +271,12 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', () => {
                 const id = btn.getAttribute('data-id');
                 releases = releases.filter(r => r.id !== id);
+                shopProducts = shopProducts.filter(p => p.id !== 'music-' + id);
                 renderReleases();
                 renderAdminReleasesList();
+                renderShopProducts();
+                renderAdminProductsList();
+                saveDatabase();
             });
         });
     }
@@ -233,6 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 shopProducts = shopProducts.filter(p => p.id !== id);
                 renderShopProducts();
                 renderAdminProductsList();
+                saveDatabase();
             });
         });
     }
@@ -600,34 +671,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    demoForm.addEventListener('submit', (e) => {
+    demoForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const newDemo = {
-            id: 'demo-' + Date.now(),
-            realName: document.getElementById('demo-real-name').value,
-            stageName: document.getElementById('demo-artist-name').value,
-            email: document.getElementById('demo-email').value,
-            instagram: document.getElementById('demo-instagram').value,
-            spotify: document.getElementById('demo-spotify').value,
-            dni: '',
-            address: '',
-            bio: document.getElementById('demo-bio').value,
-            trackTitle: document.getElementById('demo-track-title').value,
-            genre: document.getElementById('demo-track-genre').value,
-            deliveryType: deliveryType,
-            streamLink: deliveryType === 'link' ? document.getElementById('demo-stream-link').value : '',
-            fileName: deliveryType === 'file' ? (demoFileInput.files[0] ? demoFileInput.files[0].name : 'archivo.wav') : '',
-            samplesUsed: document.getElementById('demo-samples-used').value
-        };
+        const submitBtn = demoForm.querySelector('button[type="submit"]');
+        const origText = submitBtn ? submitBtn.textContent : 'Enviar';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Subiendo audio y enviando...';
+        }
 
-        submittedDemos.push(newDemo);
-        updateInboxUI();
-        
-        alert('¡Tu demo ha sido enviada con éxito! El equipo de A&R la revisará pronto.');
-        demoForm.reset();
-        selectedFileLabel.textContent = 'Ningún archivo seleccionado';
-        goToStep(1);
+        try {
+            let fileUrl = '';
+            if (deliveryType === 'file' && demoFileInput.files.length > 0) {
+                fileUrl = await uploadAudioFile(demoFileInput.files[0]);
+            }
+
+            const newDemo = {
+                id: 'demo-' + Date.now(),
+                realName: document.getElementById('demo-real-name').value,
+                stageName: document.getElementById('demo-artist-name').value,
+                email: document.getElementById('demo-email').value,
+                instagram: document.getElementById('demo-instagram').value,
+                spotify: document.getElementById('demo-spotify').value,
+                dni: '',
+                address: '',
+                bio: document.getElementById('demo-bio').value,
+                trackTitle: document.getElementById('demo-track-title').value,
+                genre: document.getElementById('demo-track-genre').value,
+                deliveryType: deliveryType,
+                streamLink: deliveryType === 'link' ? document.getElementById('demo-stream-link').value : fileUrl,
+                fileName: deliveryType === 'file' ? (demoFileInput.files[0] ? demoFileInput.files[0].name : 'archivo.wav') : '',
+                samplesUsed: document.getElementById('demo-samples-used').value
+            };
+
+            submittedDemos.push(newDemo);
+            updateInboxUI();
+            await saveDatabase();
+            
+            alert('¡Tu demo ha sido enviada con éxito! El equipo de A&R la revisará pronto.');
+            demoForm.reset();
+            selectedFileLabel.textContent = 'Ningún archivo seleccionado';
+            goToStep(1);
+        } catch (err) {
+            console.error(err);
+            alert('Ocurrió un error al subir el audio o enviar la demo. Por favor intenta de nuevo.');
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = origText;
+            }
+        }
     });
 
     // -------------------------------------------------------------
@@ -769,6 +863,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const id = btn.getAttribute('data-id');
                 submittedDemos = submittedDemos.filter(d => d.id !== id);
                 updateInboxUI();
+                saveDatabase();
             });
         });
 
@@ -798,6 +893,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Remove from list
                 submittedDemos = submittedDemos.filter(d => d.id !== id);
                 updateInboxUI();
+                saveDatabase();
 
                 // Navigate to contracts pane inside workspace
                 adminMenuButtons.forEach(b => {
@@ -821,37 +917,116 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Release Format Toggle Logic
+    const btnRelFormatFile = document.getElementById('btn-rel-format-file');
+    const btnRelFormatLink = document.getElementById('btn-rel-format-link');
+    const groupRelLink = document.getElementById('group-rel-link');
+    const relDragDrop = document.getElementById('rel-drag-drop');
+    const relFileInput = document.getElementById('rel-file-input');
+    const selectedRelFileLabel = document.getElementById('selected-rel-file-label');
+    
+    let relDeliveryType = 'file'; // default
+
+    if (btnRelFormatFile && btnRelFormatLink) {
+        btnRelFormatFile.addEventListener('click', () => {
+            relDeliveryType = 'file';
+            btnRelFormatFile.classList.add('active');
+            btnRelFormatLink.classList.remove('active');
+            relDragDrop.classList.remove('d-none');
+            groupRelLink.classList.add('d-none');
+            const relAudio = document.getElementById('rel-audio');
+            if (relAudio) relAudio.required = false;
+        });
+
+        btnRelFormatLink.addEventListener('click', () => {
+            relDeliveryType = 'link';
+            btnRelFormatLink.classList.add('active');
+            btnRelFormatFile.classList.remove('active');
+            groupRelLink.classList.remove('d-none');
+            relDragDrop.classList.add('d-none');
+            const relAudio = document.getElementById('rel-audio');
+            if (relAudio) relAudio.required = true;
+        });
+        
+        // Drag and drop for release file
+        relDragDrop.addEventListener('click', () => relFileInput.click());
+        relFileInput.addEventListener('change', () => {
+            if (relFileInput.files.length > 0) {
+                selectedRelFileLabel.textContent = relFileInput.files[0].name;
+            } else {
+                selectedRelFileLabel.textContent = 'Ningún archivo seleccionado';
+            }
+        });
+    }
+
     // -------------------------------------------------------------
     // EDIT RELEASES FORM SUBMIT
     // -------------------------------------------------------------
     const formAddRelease = document.getElementById('form-add-release');
-    formAddRelease.addEventListener('submit', (e) => {
+    formAddRelease.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const newTrack = {
-            id: 'rel-' + Date.now(),
-            title: document.getElementById('rel-title').value,
-            artist: document.getElementById('rel-artist').value,
-            version: document.getElementById('rel-version').value,
-            genre: document.getElementById('rel-genre').value,
-            date: document.getElementById('rel-date').value,
-            price: parseFloat(document.getElementById('rel-price').value),
-            audioSrc: document.getElementById('rel-audio').value
-        };
+        const submitBtn = formAddRelease.querySelector('button[type="submit"]');
+        const origText = submitBtn ? submitBtn.textContent : 'Publicar Track';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Subiendo audio y publicando...';
+        }
 
-        releases.push(newTrack);
-        
-        // Re-render
-        renderReleases();
-        renderAdminReleasesList();
-        
-        // Reset form
-        formAddRelease.reset();
-        document.getElementById('rel-version').value = 'Original Mix';
-        document.getElementById('rel-price').value = '1.99';
-        document.getElementById('rel-audio').value = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3';
-        
-        alert('¡Track agregado exitosamente al catálogo de Releases!');
+        try {
+            let audioUrl = '';
+            if (relDeliveryType === 'file' && relFileInput.files.length > 0) {
+                audioUrl = await uploadAudioFile(relFileInput.files[0]);
+            } else {
+                audioUrl = document.getElementById('rel-audio').value || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3';
+            }
+
+            const newTrack = {
+                id: 'rel-' + Date.now(),
+                title: document.getElementById('rel-title').value,
+                artist: document.getElementById('rel-artist').value,
+                version: document.getElementById('rel-version').value,
+                genre: document.getElementById('rel-genre').value,
+                date: document.getElementById('rel-date').value,
+                price: parseFloat(document.getElementById('rel-price').value),
+                audioSrc: audioUrl
+            };
+
+            releases.push(newTrack);
+
+            // Add to shop products automatically
+            const newProduct = {
+                id: 'music-' + newTrack.id,
+                name: `${newTrack.title} (${newTrack.version})`,
+                desc: `Licencia digital directa del track en alta fidelidad de 24 bits (WAV / MP3). Artista: ${newTrack.artist}.`,
+                category: 'music',
+                price: newTrack.price
+            };
+            shopProducts.push(newProduct);
+            
+            // Re-render both areas
+            renderReleases();
+            renderAdminReleasesList();
+            renderShopProducts();
+            renderAdminProductsList();
+            
+            await saveDatabase();
+
+            // Reset form uploader
+            formAddRelease.reset();
+            if (selectedRelFileLabel) selectedRelFileLabel.textContent = 'Ningún archivo seleccionado';
+            if (btnRelFormatFile) btnRelFormatFile.click();
+            
+            alert('¡Track agregado exitosamente al catálogo de Releases y a la Tienda!');
+        } catch (err) {
+            console.error(err);
+            alert('Ocurrió un error al subir el audio o registrar la release.');
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = origText;
+            }
+        }
     });
 
     // -------------------------------------------------------------
@@ -874,6 +1049,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Re-render
         renderShopProducts();
         renderAdminProductsList();
+        saveDatabase();
 
         // Reset form
         formAddProduct.reset();
@@ -899,6 +1075,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Set default date to today
+    const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
@@ -1063,6 +1240,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('hashchange', checkRoute);
     window.addEventListener('load', checkRoute);
     
+    // Load database on start
+    loadDatabase();
+
     // Check initial route on load
     checkRoute();
 

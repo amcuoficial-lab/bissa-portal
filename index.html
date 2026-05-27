@@ -385,8 +385,24 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="rel-audio">Enlace de Audio MP3 (Preview)</label>
-                                            <input type="url" id="rel-audio" value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" required>
+                                            <label>Audio del Track (WAV / MP3 o Enlace) *</label>
+                                            <div class="demo-format-selector" style="margin-bottom: 10px;">
+                                                <button type="button" class="format-btn active" id="btn-rel-format-file" style="padding: 6px 12px; font-size: 11px;">Subir WAV / MP3</button>
+                                                <button type="button" class="format-btn" id="btn-rel-format-link" style="padding: 6px 12px; font-size: 11px;">Pegar Enlace URL</button>
+                                            </div>
+                                            
+                                            <!-- File upload uploader -->
+                                            <div class="drag-drop-zone" id="rel-drag-drop" style="padding: 15px;">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                                <span class="drag-drop-text" style="font-size: 11px;">Sube un archivo de audio WAV / MP3</span>
+                                                <input type="file" id="rel-file-input" accept=".wav,.mp3" style="display: none;">
+                                                <span class="selected-file-name" id="selected-rel-file-label" style="font-size: 10px;">Ningún archivo seleccionado</span>
+                                            </div>
+                                            
+                                            <!-- URL input -->
+                                            <div id="group-rel-link" class="d-none" style="margin-top: 5px;">
+                                                <input type="url" id="rel-audio" value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" placeholder="https://ejemplo.com/audio.mp3">
+                                            </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary w-100">Publicar Track</button>
                                     </form>

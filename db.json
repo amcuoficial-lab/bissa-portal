@@ -1,0 +1,90 @@
+{
+  "releases": [
+    {
+      "id": "rel-1",
+      "title": "Fkn Sound",
+      "artist": "AMCU",
+      "version": "Original Mix",
+      "genre": "Bass House",
+      "date": "27-05-2026",
+      "price": 1.99,
+      "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    },
+    {
+      "id": "rel-2",
+      "title": "Acid Moon",
+      "artist": "Nacho Serra",
+      "version": "Original Mix",
+      "genre": "Melodic Techno",
+      "date": "14-05-2026",
+      "price": 1.99,
+      "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+    },
+    {
+      "id": "rel-3",
+      "title": "Bassline Groover",
+      "artist": "Nico Servidio",
+      "version": "Radio Edit",
+      "genre": "Tech House",
+      "date": "28-04-2026",
+      "price": 1.99,
+      "audioSrc": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+    }
+  ],
+  "shopProducts": [
+    {
+      "id": "merch-tee",
+      "name": "Camiseta Bissa Cyber Tee",
+      "desc": "Camiseta premium 100% algodón con estampado flúor verde manzana y violeta.",
+      "category": "merch",
+      "price": 29.99
+    },
+    {
+      "id": "merch-cap",
+      "name": "Gorra Bissa Dad Cap",
+      "desc": "Gorra clásica con logotipo BiSSa bordado en alta definición flúor.",
+      "category": "merch",
+      "price": 19.99
+    },
+    {
+      "id": "samples-th1",
+      "name": "Bissa Tech House Sample Pack Vol.1",
+      "desc": "Más de 500 loops de bajo, baterías crujientes y presets listos para tus pistas.",
+      "category": "samples",
+      "price": 34.99
+    },
+    {
+      "id": "samples-acid",
+      "name": "Minimal & Acid Pack",
+      "desc": "Samples analógicos reales grabados con sintetizadores y cajas de ritmo vintage.",
+      "category": "samples",
+      "price": 24.99
+    },
+    {
+      "id": "music-rel-1",
+      "name": "Fkn Sound (Original Mix)",
+      "desc": "Licencia digital directa del track en alta fidelidad de 24 bits (WAV / MP3). Artista: AMCU.",
+      "category": "music",
+      "price": 1.99
+    }
+  ],
+  "submittedDemos": [
+    {
+      "id": "demo-mock-1",
+      "realName": "Juan Gómez",
+      "stageName": "DJ Acid",
+      "email": "info@djacid.com",
+      "instagram": "@djacid",
+      "spotify": "https://open.spotify.com/artist/4Y586Q2KqZixdO1e4mR76A",
+      "dni": "98765432Y",
+      "address": "Calle Falsa 123, Buenos Aires, Argentina",
+      "bio": "Productor de Tech House de Argentina.",
+      "trackTitle": "Vibration Loop",
+      "genre": "Tech House",
+      "deliveryType": "link",
+      "streamLink": "https://soundcloud.com/djacid/vibration-loop-demo",
+      "fileName": "",
+      "samplesUsed": "no"
+    }
+  ]
+}
