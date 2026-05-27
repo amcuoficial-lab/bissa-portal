@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let releases = [
         {
             id: 'rel-1',
-            title: 'Fucking Sound',
-            artist: 'Amcu',
+            title: 'Fkn Sound',
+            artist: 'AMCU',
             version: 'Original Mix',
-            genre: 'Tech House',
+            genre: 'Bass House',
             date: '27-05-2026',
             price: 1.99,
             audioSrc: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 'music-sinfonia',
-            name: 'Sinfonía del Espacio (WAV / MP3)',
+            name: 'Fkn Sound (WAV / MP3)',
             desc: 'Licencia digital directa del track en alta fidelidad de 24 bits.',
             category: 'music',
             price: 1.99
@@ -535,6 +535,8 @@ document.addEventListener('DOMContentLoaded', () => {
             realName: 'Juan Gómez',
             stageName: 'DJ Acid',
             email: 'info@djacid.com',
+            instagram: '@djacid',
+            spotify: 'https://open.spotify.com/artist/4Y586Q2KqZixdO1e4mR76A',
             dni: '98765432Y',
             address: 'Calle Falsa 123, Buenos Aires, Argentina',
             bio: 'Productor de Tech House de Argentina.',
@@ -606,6 +608,8 @@ document.addEventListener('DOMContentLoaded', () => {
             realName: document.getElementById('demo-real-name').value,
             stageName: document.getElementById('demo-artist-name').value,
             email: document.getElementById('demo-email').value,
+            instagram: document.getElementById('demo-instagram').value,
+            spotify: document.getElementById('demo-spotify').value,
             dni: '',
             address: '',
             bio: document.getElementById('demo-bio').value,
@@ -704,6 +708,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="demo-card-body">
                         <h3>${demo.trackTitle}</h3>
                         <p class="artist">Por: <strong>${demo.stageName}</strong> | ${demo.realName}</p>
+                        <div class="demo-socials" style="margin-top: 5px; margin-bottom: 10px; font-size: 12px; display: flex; gap: 15px;">
+                            ${demo.instagram ? `<span><strong>Instagram:</strong> <a href="https://instagram.com/${demo.instagram.replace('@','')}" target="_blank" style="color: var(--accent-violet); text-decoration: underline;">${demo.instagram}</a></span>` : ''}
+                            ${demo.spotify ? `<span><strong>Spotify:</strong> <a href="${demo.spotify}" target="_blank" style="color: var(--accent-green); text-decoration: underline;">Ver Perfil</a></span>` : ''}
+                        </div>
                         <p class="genre">Género: ${demo.genre}</p>
                         <p class="desc">"${demo.bio || 'Sin biografía disponible.'}"</p>
                         <div class="demo-player-box">
@@ -1037,17 +1045,17 @@ document.addEventListener('DOMContentLoaded', () => {
     renderShopProducts();
     updateBinds();
 
-    // Hash Router for /#admin access
-    function checkHashRoute() {
-        if (window.location.hash === '#admin') {
+    // Router for admin access (/admin or #admin)
+    function checkRoute() {
+        if (window.location.pathname === '/admin' || window.location.hash === '#admin') {
             switchTab('admin');
         }
     }
-    window.addEventListener('hashchange', checkHashRoute);
-    window.addEventListener('load', checkHashRoute);
+    window.addEventListener('hashchange', checkRoute);
+    window.addEventListener('load', checkRoute);
     
-    // Check initial hash on load
-    checkHashRoute();
+    // Check initial route on load
+    checkRoute();
 
     // Player Minimize/Maximize Toggler
     const btnPlayerToggle = document.getElementById('btn-player-toggle');
