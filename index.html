@@ -34,8 +34,7 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                     Enviar Demo
                 </button>
-                <button class="nav-tab-btn" data-tab="admin" id="nav-btn-admin">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <button class="nav-tab-btn d-none" data-tab="admin" id="nav-btn-admin">
                     Admin Panel
                 </button>
             </nav>
@@ -45,6 +44,8 @@
                     <span class="status-indicator"></span>
                     <span>ONLINE</span>
                 </div>
+                <!-- Hidden Admin Access link at the bottom -->
+                <a href="#" id="link-admin-access" class="admin-hidden-link">Acceso Portal Admin</a>
             </div>
         </aside>
 
@@ -58,11 +59,11 @@
                         <div class="hero-overlay"></div>
                         <div class="hero-content">
                             <span class="tag">HOTTEST RELEASE</span>
-                            <h1>Sinfonía del Espacio</h1>
-                            <h3>DJ JUAN</h3>
+                            <h1 id="hero-track-title">Sinfonía del Espacio</h1>
+                            <h3 id="hero-track-artist">DJ JUAN</h3>
                             <p>Tech House • Bissa Records • Disponible en Beatport</p>
                             <div class="hero-actions">
-                                <button class="btn btn-primary btn-play-release" data-track-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" data-track-title="Sinfonía del Espacio" data-track-artist="DJ JUAN" data-track-cover="logo.png">
+                                <button class="btn btn-primary btn-play-release" id="hero-btn-play" data-track-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" data-track-title="Sinfonía del Espacio" data-track-artist="DJ JUAN" data-track-cover="logo.png">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Escuchar Ahora
                                 </button>
                                 <a href="https://www.beatport.com/es/label/bissa/129721" target="_blank" class="btn btn-secondary">
@@ -78,7 +79,7 @@
                             <span class="subtitle">LABEL ID: 129721</span>
                         </div>
 
-                        <!-- Tracks List -->
+                        <!-- Tracks List Container (Rendered dynamically via app.js) -->
                         <div class="bp-tracks-list">
                             <div class="bp-list-header">
                                 <span class="col-play"></span>
@@ -89,80 +90,8 @@
                                 <span class="col-price">PRECIO</span>
                                 <span class="col-cart"></span>
                             </div>
-
-                            <!-- Track Item 1 -->
-                            <div class="bp-track-item">
-                                <div class="col-play">
-                                    <button class="play-btn-circle" data-track-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" data-track-title="Sinfonía del Espacio" data-track-artist="DJ JUAN" data-track-cover="logo.png">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                                    </button>
-                                </div>
-                                <div class="col-title">
-                                    <img src="logo.png" alt="Cover" class="track-mini-cover">
-                                    <div class="title-details">
-                                        <span class="track-name">Sinfonía del Espacio</span>
-                                        <span class="version-name">Original Mix</span>
-                                    </div>
-                                </div>
-                                <div class="col-artist">DJ JUAN</div>
-                                <div class="col-genre"><span class="badge badge-green">Tech House</span></div>
-                                <div class="col-date">27-05-2026</div>
-                                <div class="col-price">USD 1.99</div>
-                                <div class="col-cart">
-                                    <button class="btn-buy-track" data-id="music-sinfonia" data-name="Sinfonía del Espacio (DJ JUAN)" data-price="1.99" data-type="música">
-                                        COMPRAR
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Track Item 2 -->
-                            <div class="bp-track-item">
-                                <div class="col-play">
-                                    <button class="play-btn-circle" data-track-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" data-track-title="Acid Moon" data-track-artist="Nacho Serra" data-track-cover="logo.png">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                                    </button>
-                                </div>
-                                <div class="col-title">
-                                    <img src="logo.png" alt="Cover" class="track-mini-cover">
-                                    <div class="title-details">
-                                        <span class="track-name">Acid Moon</span>
-                                        <span class="version-name">Original Mix</span>
-                                    </div>
-                                </div>
-                                <div class="col-artist">Nacho Serra</div>
-                                <div class="col-genre"><span class="badge badge-purple">Melodic Techno</span></div>
-                                <div class="col-date">14-05-2026</div>
-                                <div class="col-price">USD 1.99</div>
-                                <div class="col-cart">
-                                    <button class="btn-buy-track" data-id="music-acid" data-name="Acid Moon (Nacho Serra)" data-price="1.99" data-type="música">
-                                        COMPRAR
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Track Item 3 -->
-                            <div class="bp-track-item">
-                                <div class="col-play">
-                                    <button class="play-btn-circle" data-track-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" data-track-title="Bassline Groover" data-track-artist="Nico Servidio" data-track-cover="logo.png">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                                    </button>
-                                </div>
-                                <div class="col-title">
-                                    <img src="logo.png" alt="Cover" class="track-mini-cover">
-                                    <div class="title-details">
-                                        <span class="track-name">Bassline Groover</span>
-                                        <span class="version-name">Radio Edit</span>
-                                    </div>
-                                </div>
-                                <div class="col-artist">Nico Servidio</div>
-                                <div class="col-genre"><span class="badge badge-green">Tech House</span></div>
-                                <div class="col-date">28-04-2026</div>
-                                <div class="col-price">USD 1.99</div>
-                                <div class="col-cart">
-                                    <button class="btn-buy-track" data-id="music-bassline" data-name="Bassline Groover (Nico Servidio)" data-price="1.99" data-type="música">
-                                        COMPRAR
-                                    </button>
-                                </div>
+                            <div id="bp-tracks-container">
+                                <!-- Dynamic JS injection -->
                             </div>
                         </div>
                     </div>
@@ -184,104 +113,9 @@
                         </div>
                     </div>
 
-                    <!-- Products Grid -->
-                    <div class="products-grid">
-                        <!-- Product 1: Merch -->
-                        <div class="product-card" data-category="merch">
-                            <div class="product-image-container">
-                                <div class="product-badge">NEW merch</div>
-                                <div class="product-placeholder merch-placeholder">
-                                    <span>BISSA CYBER TEE</span>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <h3>Camiseta Bissa Cyber Tee</h3>
-                                <p class="product-desc">Camiseta premium 100% algodón con estampado flúor verde manzana y violeta.</p>
-                                <div class="product-price-row">
-                                    <span class="price">USD 29.99</span>
-                                    <button class="btn btn-primary btn-add-cart" data-id="merch-tee" data-name="Camiseta Bissa Cyber" data-price="29.99" data-type="merch">
-                                        Añadir al Carrito
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product 2: Merch -->
-                        <div class="product-card" data-category="merch">
-                            <div class="product-image-container">
-                                <div class="product-placeholder merch-placeholder cap">
-                                    <span>BISSA LOGO CAP</span>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <h3>Gorra Bissa Dad Cap</h3>
-                                <p class="product-desc">Gorra clásica con logotipo BiSSa bordado en alta definición flúor.</p>
-                                <div class="product-price-row">
-                                    <span class="price">USD 19.99</span>
-                                    <button class="btn btn-primary btn-add-cart" data-id="merch-cap" data-name="Gorra Bissa Logo" data-price="19.99" data-type="merch">
-                                        Añadir al Carrito
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product 3: Sample Pack -->
-                        <div class="product-card" data-category="samples">
-                            <div class="product-image-container">
-                                <div class="product-badge accent-purple">pro audio</div>
-                                <div class="product-placeholder samples-placeholder">
-                                    <span>TECH HOUSE VOL. 1</span>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <h3>Bissa Tech House Sample Pack Vol.1</h3>
-                                <p class="product-desc">Más de 500 loops de bajo, baterías crujientes y presets listos para tus pistas.</p>
-                                <div class="product-price-row">
-                                    <span class="price">USD 34.99</span>
-                                    <button class="btn btn-primary btn-add-cart" data-id="samples-th1" data-name="Tech House Sample Pack Vol.1" data-price="34.99" data-type="samples">
-                                        Añadir al Carrito
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product 4: Sample Pack -->
-                        <div class="product-card" data-category="samples">
-                            <div class="product-image-container">
-                                <div class="product-placeholder samples-placeholder techno">
-                                    <span>MINIMAL ACID PACK</span>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <h3>Minimal & Acid Pack</h3>
-                                <p class="product-desc">Samples analógicos reales grabados con sintetizadores y cajas de ritmo vintage.</p>
-                                <div class="product-price-row">
-                                    <span class="price">USD 24.99</span>
-                                    <button class="btn btn-primary btn-add-cart" data-id="samples-acid" data-name="Minimal & Acid Sample Pack" data-price="24.99" data-type="samples">
-                                        Añadir al Carrito
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product 5: Music -->
-                        <div class="product-card" data-category="music">
-                            <div class="product-image-container">
-                                <div class="product-placeholder music-placeholder">
-                                    <span>SINFONIA DIGITAL</span>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <h3>Sinfonía del Espacio (WAV / MP3)</h3>
-                                <p class="product-desc">Licencia digital directa del track en alta fidelidad de 24 bits.</p>
-                                <div class="product-price-row">
-                                    <span class="price">USD 1.99</span>
-                                    <button class="btn btn-primary btn-add-cart" data-id="music-sinfonia" data-name="Sinfonía del Espacio (WAV)" data-price="1.99" data-type="music">
-                                        Añadir al Carrito
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Products Grid (Rendered dynamically via app.js) -->
+                    <div class="products-grid" id="shop-products-container">
+                        <!-- Dynamic JS injection -->
                     </div>
                 </div>
 
@@ -426,7 +260,7 @@
                 </div>
             </section>
 
-            <!-- VIEW: ADMIN DASHBOARD (Contract Generator & Inbox) -->
+            <!-- VIEW: ADMIN DASHBOARD (Contract Generator & Inbox & Editors) -->
             <section class="window-tab-content" id="tab-admin">
                 <!-- Login screen -->
                 <div class="admin-login-card" id="admin-login-screen">
@@ -457,8 +291,16 @@
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                                 Demos Recibidas (<span id="inbox-count">1</span>)
                             </button>
+                            <button class="admin-menu-btn" data-admin-pane="manage-releases">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M10 8v8l6-4z"/></svg>
+                                Editar Releases
+                            </button>
+                            <button class="admin-menu-btn" data-admin-pane="manage-shop">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/></svg>
+                                Editar Tienda
+                            </button>
                             <button class="admin-menu-btn" data-admin-pane="contracts">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                                 Creador de Contratos
                             </button>
                             <button class="admin-menu-btn" id="btn-admin-logout">
@@ -477,44 +319,118 @@
                                 <h2>Bandeja de Entrada de Demos</h2>
                                 <p>Revisa las maquetas enviadas por los artistas y toma acciones.</p>
                             </div>
-                            
                             <div class="demos-list-wrapper" id="inbox-list">
-                                <!-- Mock Demo Item 1 -->
-                                <div class="demo-inbox-card" id="demo-mock-1">
-                                    <div class="demo-card-header">
-                                        <span class="badge badge-green">NUEVA DEMO</span>
-                                        <span class="demo-time">Hace 10 mins</span>
-                                    </div>
-                                    <div class="demo-card-body">
-                                        <h3>Vibration Loop</h3>
-                                        <p class="artist">Por: <strong>DJ Acid</strong> (Stage Name) | Juan Gómez (Real)</p>
-                                        <p class="genre">Género: Tech House</p>
-                                        <p class="desc">"Un track con un bajo rodante y vocales oscuros, ideal para la mitad del set."</p>
-                                        <div class="demo-player-box">
-                                            <button class="btn btn-secondary btn-play-demo" data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3">
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Escuchar Demo
-                                            </button>
-                                            <span class="demo-link-label">Enlace Original: <a href="https://soundcloud.com/djacid/vibration-loop-demo" target="_blank">SoundCloud privado</a></span>
+                                <!-- Dynamic JS injection -->
+                            </div>
+                        </div>
+
+                        <!-- PANE 2: MANAGE RELEASES (NEW!) -->
+                        <div class="admin-pane-content" id="pane-manage-releases">
+                            <div class="pane-header">
+                                <h2>Gestión de Catálogo (Releases)</h2>
+                                <p>Agrega o elimina canciones de la sección pública de Releases estilo Beatport.</p>
+                            </div>
+                            
+                            <div class="editor-layout">
+                                <!-- Add Release Form -->
+                                <div class="admin-form-card">
+                                    <h3>Añadir Nuevo Track</h3>
+                                    <form id="form-add-release">
+                                        <div class="form-group">
+                                            <label for="rel-title">Título del Track</label>
+                                            <input type="text" id="rel-title" placeholder="Ej. Cyber Track" required>
                                         </div>
-                                    </div>
-                                    <div class="demo-card-actions">
-                                        <button class="btn btn-danger btn-reject-demo" data-id="demo-mock-1">Rechazar</button>
-                                        <button class="btn btn-success btn-approve-demo" 
-                                            data-id="demo-mock-1"
-                                            data-realname="Juan Gómez"
-                                            data-stagename="DJ Acid"
-                                            data-dni="98765432Y"
-                                            data-address="Calle Falsa 123, Buenos Aires, Argentina"
-                                            data-track="Vibration Loop"
-                                            data-genre="Tech House">
-                                            Aprobar y Crear Contrato
-                                        </button>
+                                        <div class="form-group">
+                                            <label for="rel-artist">Artista</label>
+                                            <input type="text" id="rel-artist" placeholder="Ej. DJ Acid" required>
+                                        </div>
+                                        <div class="form-group-row">
+                                            <div class="form-group">
+                                                <label for="rel-version">Versión / Mezcla</label>
+                                                <input type="text" id="rel-version" value="Original Mix" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="rel-genre">Género</label>
+                                                <input type="text" id="rel-genre" placeholder="Ej. Tech House" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-row">
+                                            <div class="form-group">
+                                                <label for="rel-price">Precio (USD)</label>
+                                                <input type="number" id="rel-price" step="0.01" value="1.99" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="rel-date">Fecha de Lanzamiento</label>
+                                                <input type="text" id="rel-date" placeholder="DD-MM-AAAA" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="rel-audio">Enlace de Audio MP3 (Preview)</label>
+                                            <input type="url" id="rel-audio" value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Publicar Track</button>
+                                    </form>
+                                </div>
+
+                                <!-- Current Releases list -->
+                                <div class="admin-list-card">
+                                    <h3>Tracks en Catálogo</h3>
+                                    <div class="admin-items-list" id="admin-releases-list">
+                                        <!-- Dynamic JS Injection -->
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- PANE 2: CONTRACT GENERATOR -->
+                        <!-- PANE 3: MANAGE SHOP (NEW!) -->
+                        <div class="admin-pane-content" id="pane-manage-shop">
+                            <div class="pane-header">
+                                <h2>Gestión de la Tienda (Store)</h2>
+                                <p>Agrega o elimina merchandising, sample packs o descargas de música de la tienda.</p>
+                            </div>
+                            
+                            <div class="editor-layout">
+                                <!-- Add Product Form -->
+                                <div class="admin-form-card">
+                                    <h3>Añadir Nuevo Producto</h3>
+                                    <form id="form-add-product">
+                                        <div class="form-group">
+                                            <label for="prod-name">Nombre del Producto</label>
+                                            <input type="text" id="prod-name" placeholder="Ej. Camiseta Bissa Negra" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="prod-desc">Descripción</label>
+                                            <input type="text" id="prod-desc" placeholder="Breve detalle..." required>
+                                        </div>
+                                        <div class="form-group-row">
+                                            <div class="form-group">
+                                                <label for="prod-category">Categoría</label>
+                                                <select id="prod-category" required>
+                                                    <option value="merch">Merchandising</option>
+                                                    <option value="samples">Sample Pack</option>
+                                                    <option value="music">Música WAV/MP3</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="prod-price">Precio (USD)</label>
+                                                <input type="number" id="prod-price" step="0.01" placeholder="Ej. 19.99" required>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Agregar Producto</button>
+                                    </form>
+                                </div>
+
+                                <!-- Current Products list -->
+                                <div class="admin-list-card">
+                                    <h3>Productos en Tienda</h3>
+                                    <div class="admin-items-list" id="admin-products-list">
+                                        <!-- Dynamic JS Injection -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PANE 4: CONTRACT GENERATOR -->
                         <div class="admin-pane-content" id="pane-contracts">
                             <div class="contract-generator-workspace">
                                 <!-- Embedded Contract Sidebar Editor -->
