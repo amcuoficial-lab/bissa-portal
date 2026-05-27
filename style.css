@@ -1284,6 +1284,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 0 40px;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .player-track-info {
@@ -1813,4 +1814,115 @@ body {
 .btn-delete-item:hover {
     background: #ef4444;
     color: white;
+}
+
+/* Demo Format Selector & Upload Zone */
+.demo-format-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.format-btn {
+    flex: 1;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--panel-border);
+    color: var(--text-secondary);
+    padding: 10px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.format-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255,255,255,0.04);
+}
+
+.format-btn.active {
+    background: rgba(46, 204, 113, 0.08);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+.drag-drop-zone {
+    border: 2px dashed var(--panel-border);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.01);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.drag-drop-zone:hover, .drag-drop-zone.dragover {
+    border-color: var(--accent-green);
+    background: rgba(46, 204, 113, 0.02);
+}
+
+.drag-drop-zone svg {
+    color: var(--text-secondary);
+}
+
+.drag-drop-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.selected-file-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-green);
+    letter-spacing: 0.5px;
+}
+
+/* Minimize / Maximize Player Button */
+.player-toggle-btn {
+    position: absolute;
+    top: -28px;
+    right: 40px;
+    height: 28px;
+    padding: 0 16px;
+    background: rgba(7, 8, 11, 0.95);
+    border: 1px solid var(--panel-border);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    color: var(--text-primary);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(15px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 10;
+}
+
+.player-toggle-btn:hover {
+    color: var(--accent-green);
+    border-color: var(--accent-green);
+    background: rgba(7, 8, 11, 1);
+}
+
+.global-audio-player.minimized {
+    transform: translateY(80px);
+}
+
+.global-audio-player.minimized .player-toggle-btn {
+    transform: translateY(-80px);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    background: rgba(7, 8, 11, 0.98);
 }

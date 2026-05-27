@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let releases = [
         {
             id: 'rel-1',
-            title: 'Sinfonía del Espacio',
-            artist: 'DJ JUAN',
+            title: 'Fucking Sound',
+            artist: 'Amcu',
             version: 'Original Mix',
             genre: 'Tech House',
             date: '27-05-2026',
@@ -462,6 +462,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnNextSteps = document.querySelectorAll('.btn-next-step');
     const btnPrevSteps = document.querySelectorAll('.btn-prev-step');
     const demoForm = document.getElementById('demo-submission-form');
+
+    // Format Selector
+    const btnFormatLink = document.getElementById('btn-format-link');
+    const btnFormatFile = document.getElementById('btn-format-file');
+    const groupDemoLink = document.getElementById('group-demo-link');
+    const groupDemoFile = document.getElementById('group-demo-file');
+    const demoStreamLink = document.getElementById('demo-stream-link');
+    const demoFileInput = document.getElementById('demo-file-input');
+    const dragDropZone = document.getElementById('demo-drag-drop');
+    const selectedFileLabel = document.getElementById('selected-file-label');
+
+    let deliveryType = 'link'; // default
+
+    // Initialize required attributes
+    demoStreamLink.setAttribute('required', '');
+
+    btnFormatLink.addEventListener('click', () => {
+        deliveryType = 'link';
+        btnFormatLink.classList.add('active');
+        btnFormatFile.classList.remove('active');
+        groupDemoLink.classList.remove('d-none');
+        groupDemoFile.classList.add('d-none');
+        demoStreamLink.setAttribute('required', '');
+        demoFileInput.removeAttribute('required');
+    });
+
+    btnFormatFile.addEventListener('click', () => {
+        deliveryType = 'file';
+        btnFormatFile.classList.add('active');
+        btnFormatLink.classList.remove('active');
+        groupDemoFile.classList.remove('d-none');
+        groupDemoLink.classList.add('d-none');
+        demoFileInput.setAttribute('required', '');
+        demoStreamLink.removeAttribute('required');
+    });
+
+    // Drag and Drop Zone
+    dragDropZone.addEventListener('click', () => {
+        demoFileInput.click();
+    });
+
+    demoFileInput.addEventListener('change', () => {
+        if (demoFileInput.files.length > 0) {
+            selectedFileLabel.textContent = demoFileInput.files[0].name;
+        } else {
+            selectedFileLabel.textContent = 'Ningún archivo seleccionado';
+        }
+    });
+
+    dragDropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dragDropZone.classList.add('dragover');
+    });
+
+    dragDropZone.addEventListener('dragleave', () => {
+        dragDropZone.classList.remove('dragover');
+    });
+
+    dragDropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dragDropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) {
+            demoFileInput.files = e.dataTransfer.files;
+            selectedFileLabel.textContent = e.dataTransfer.files[0].name;
+        }
+    });
     
     let submittedDemos = [
         {
@@ -474,7 +540,9 @@ document.addEventListener('DOMContentLoaded', () => {
             bio: 'Productor de Tech House de Argentina.',
             trackTitle: 'Vibration Loop',
             genre: 'Tech House',
+            deliveryType: 'link',
             streamLink: 'https://soundcloud.com/djacid/vibration-loop-demo',
+            fileName: '',
             samplesUsed: 'no'
         }
     ];
@@ -538,12 +606,14 @@ document.addEventListener('DOMContentLoaded', () => {
             realName: document.getElementById('demo-real-name').value,
             stageName: document.getElementById('demo-artist-name').value,
             email: document.getElementById('demo-email').value,
-            dni: document.getElementById('demo-artist-id').value,
-            address: document.getElementById('demo-address').value,
+            dni: '',
+            address: '',
             bio: document.getElementById('demo-bio').value,
             trackTitle: document.getElementById('demo-track-title').value,
             genre: document.getElementById('demo-track-genre').value,
-            streamLink: document.getElementById('demo-stream-link').value,
+            deliveryType: deliveryType,
+            streamLink: deliveryType === 'link' ? document.getElementById('demo-stream-link').value : '',
+            fileName: deliveryType === 'file' ? (demoFileInput.files[0] ? demoFileInput.files[0].name : 'archivo.wav') : '',
             samplesUsed: document.getElementById('demo-samples-used').value
         };
 
@@ -552,6 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         alert('¡Tu demo ha sido enviada con éxito! El equipo de A&R la revisará pronto.');
         demoForm.reset();
+        selectedFileLabel.textContent = 'Ningún archivo seleccionado';
         goToStep(1);
     });
 
@@ -567,7 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnAdminLogin.addEventListener('click', () => {
         const pass = adminPasswordInput.value;
-        if (pass === 'bissa') {
+        if (pass === 'rosana123') {
             adminLoginScreen.classList.add('d-none');
             adminMainWorkspace.classList.remove('d-none');
             adminLoginError.style.display = 'none';
@@ -639,7 +710,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             <button class="btn btn-secondary btn-play-demo" data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" data-title="${demo.trackTitle}" data-artist="${demo.stageName}">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Escuchar Demo
                             </button>
-                            <span class="demo-link-label">Enlace Original: <a href="${demo.streamLink}" target="_blank">SoundCloud privado</a></span>
+                            <span class="demo-link-label">
+                                ${demo.deliveryType === 'file' 
+                                    ? `Archivo de Audio: <strong style="color: var(--accent-green);">${demo.fileName}</strong>` 
+                                    : `Enlace Original: <a href="${demo.streamLink}" target="_blank" style="color: var(--accent-violet); text-decoration: underline;">Escuchar en enlace</a>`
+                                }
+                            </span>
                         </div>
                     </div>
                     <div class="demo-card-actions">
@@ -960,4 +1036,35 @@ document.addEventListener('DOMContentLoaded', () => {
     renderReleases();
     renderShopProducts();
     updateBinds();
+
+    // Hash Router for /#admin access
+    function checkHashRoute() {
+        if (window.location.hash === '#admin') {
+            switchTab('admin');
+        }
+    }
+    window.addEventListener('hashchange', checkHashRoute);
+    window.addEventListener('load', checkHashRoute);
+    
+    // Check initial hash on load
+    checkHashRoute();
+
+    // Player Minimize/Maximize Toggler
+    const btnPlayerToggle = document.getElementById('btn-player-toggle');
+    const globalPlayer = document.querySelector('.global-audio-player');
+    const playerToggleIcon = document.getElementById('player-toggle-icon');
+    const playerToggleText = document.getElementById('player-toggle-text');
+
+    if (btnPlayerToggle && globalPlayer) {
+        btnPlayerToggle.addEventListener('click', () => {
+            const isMinimized = globalPlayer.classList.toggle('minimized');
+            if (isMinimized) {
+                if (playerToggleIcon) playerToggleIcon.style.transform = 'rotate(180deg)';
+                if (playerToggleText) playerToggleText.textContent = 'REPRODUCTOR';
+            } else {
+                if (playerToggleIcon) playerToggleIcon.style.transform = 'rotate(0deg)';
+                if (playerToggleText) playerToggleText.textContent = 'MINIMIZAR';
+            }
+        });
+    }
 });

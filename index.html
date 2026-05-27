@@ -31,7 +31,7 @@
                     Tienda
                 </button>
                 <button class="nav-tab-btn" data-tab="demos">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
                     Enviar Demo
                 </button>
                 <button class="nav-tab-btn d-none" data-tab="admin" id="nav-btn-admin">
@@ -180,14 +180,6 @@
                                         <label for="demo-email">Correo Electrónico *</label>
                                         <input type="email" id="demo-email" placeholder="Ej. info@artista.com" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="demo-artist-id">DNI / Pasaporte / Cédula *</label>
-                                        <input type="text" id="demo-artist-id" placeholder="Ej. 98765432Y" required>
-                                    </div>
-                                    <div class="form-group full-width">
-                                        <label for="demo-address">Dirección / Domicilio Legal *</label>
-                                        <input type="text" id="demo-address" placeholder="Dirección completa" required>
-                                    </div>
                                     <div class="form-group full-width">
                                         <label for="demo-bio">Breve Biografía / Trayectoria</label>
                                         <textarea id="demo-bio" rows="3" placeholder="Cuéntanos un poco sobre ti y tus lanzamientos anteriores..."></textarea>
@@ -211,15 +203,35 @@
                                             <option value="" disabled selected>Selecciona un género</option>
                                             <option value="Tech House">Tech House</option>
                                             <option value="House">House</option>
+                                            <option value="Bass House">Bass House</option>
+                                            <option value="Indie Dance">Indie Dance</option>
                                             <option value="Minimal / Deep Tech">Minimal / Deep Tech</option>
                                             <option value="Melodic Techno">Melodic Techno</option>
                                             <option value="Techno">Techno</option>
                                         </select>
                                     </div>
                                     <div class="form-group full-width">
+                                        <label>Formato de Entrega de Demo *</label>
+                                        <div class="demo-format-selector">
+                                            <button type="button" class="format-btn active" id="btn-format-link">Pegar Enlace</button>
+                                            <button type="button" class="format-btn" id="btn-format-file">Subir Archivo WAV/MP3</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group full-width" id="group-demo-link">
                                         <label for="demo-stream-link">Enlace de Audio (SoundCloud privado / Dropbox / Drive) *</label>
-                                        <input type="url" id="demo-stream-link" placeholder="https://soundcloud.com/tu-perfil/tu-pista-secreta" required>
+                                        <input type="url" id="demo-stream-link" placeholder="https://soundcloud.com/tu-perfil/tu-pista-secreta">
                                         <span class="form-hint">Asegúrate de que el enlace sea accesible y esté en modo descarga habilitado si es SoundCloud privado.</span>
+                                    </div>
+
+                                    <div class="form-group full-width d-none" id="group-demo-file">
+                                        <label for="demo-file-input">Archivo de Audio (WAV / MP3) *</label>
+                                        <div class="drag-drop-zone" id="demo-drag-drop">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                            <span class="drag-drop-text">Arrastra tu archivo aquí o haz clic para buscar</span>
+                                            <input type="file" id="demo-file-input" accept=".wav,.mp3" style="display: none;">
+                                            <span class="selected-file-name" id="selected-file-label">Ningún archivo seleccionado</span>
+                                        </div>
                                     </div>
                                     <div class="form-group full-width">
                                         <label for="demo-samples-used">¿Contiene samples de terceros? *</label>
@@ -704,6 +716,12 @@
 
         <!-- Sticky Floating Audio Player (Global) -->
         <div class="global-audio-player no-print">
+            <!-- Toggle Player Minimize/Maximize Button -->
+            <button class="player-toggle-btn" id="btn-player-toggle" title="Minimizar / Maximizar Reproductor">
+                <svg id="player-toggle-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.3s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span id="player-toggle-text">MINIMIZAR</span>
+            </button>
+
             <div class="player-track-info">
                 <img src="logo.png" alt="Track Cover" class="player-cover" id="player-track-cover">
                 <div class="player-metadata">
