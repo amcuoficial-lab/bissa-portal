@@ -657,9 +657,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    adminPasswordInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            btnAdminLogin.click();
+        }
+    });
+
     btnAdminLogout.addEventListener('click', () => {
         adminMainWorkspace.classList.add('d-none');
         adminLoginScreen.classList.remove('d-none');
+        switchTab('releases');
+        const adminBtn = document.getElementById('nav-btn-admin');
+        if (adminBtn) adminBtn.classList.add('d-none');
     });
 
     // Admin sub-pane navigation

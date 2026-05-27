@@ -1917,11 +1917,11 @@ body {
 }
 
 .global-audio-player.minimized {
-    transform: translateY(80px);
+    transform: translateY(76px);
 }
 
 .global-audio-player.minimized .player-toggle-btn {
-    transform: translateY(-80px);
+    transform: translateY(-76px);
     border: 1px solid var(--panel-border);
     border-radius: 8px;
     background: rgba(7, 8, 11, 0.98);
